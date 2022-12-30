@@ -54,8 +54,12 @@ def calculate_similarity(server_name, database_name):
 
         # Iterate through the other items
         for j, other_item in enumerate(items):
+            if ('twitter' in news_url[i]):
+                point_content = 0.6
+            else:
+                point_content = 0.3
             # If the items are similar and the other item is not already in the item map, add it with the same id number as the current item
-            if i != j and ((similarity_content[i][j] >= 0.7 and 'twitter' in news_url[i]) or (similarity_content[i][j] >= 0.3) or ((similarity_content[i][j] >= 0.2 and similarity_title[i][j] > 0.4))):
+            if i != j and ((similarity_content[i][j] >= point_content) or ((similarity_content[i][j] >= point_content and similarity_title[i][j] > 0.4))):
                 if other_item not in item_map:
                     item_map[other_item] = item_map[item]
 
