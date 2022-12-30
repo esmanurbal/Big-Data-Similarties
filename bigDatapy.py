@@ -76,7 +76,7 @@ def calculate_similarity(server_name, database_name):
         similarity_data.append(data)
 
     json_data = json.dumps(similarity_data,ensure_ascii=False, indent=4, sort_keys=True)
-    with open("data.json", "w", encoding='utf-8') as f:
+    with open("datas.json", "w", encoding='utf-8') as f:
         f.write(json_data)
 
 calculate_similarity('DESKTOP-JT60920','ESSL')
