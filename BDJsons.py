@@ -1,4 +1,5 @@
 import json
+import os
 import pyodbc
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
@@ -59,13 +60,13 @@ def calculate_similarity(server_name, database_name):
                 if i != j and ((content_similarity[i][j] >= Ctreshold) or (similarity_title[i][j] >= Ttreshold and content_similarity[i][j] >= TCtreshold)): 
                     if other_item not in item_map:
                         item_map[other_item] = item_map[item]
-
     
     similarity_data = []
 
     for i , (item1, id1) in enumerate(item_map.items()):
         index1 = items.index(item1)
         for j , (item2, id2) in enumerate(item_map.items()):
+
             index2 = items.index(item2)
             if i!=j and id1 == id2:
                 data = {
@@ -84,10 +85,13 @@ def calculate_similarity(server_name, database_name):
                 }
 
         similarity_data.append(data)
+    for i in similarity_data:
+            json_data = json.dumps(i,ensure_ascii=False, indent=4, sort_keys=True)
 
-    json_data = json.dumps(similarity_data,ensure_ascii=False, indent=4, sort_keys=True)
-    with open("dataWurl2-charSize.json", "w", encoding='utf-8') as f:
-        f.write(json_data)
-
+            if os.path.exists(f"news{i['id1']}.json"):
+                with open(f"news{i['id1']}.json", "a", encoding='utf-8') as f:
+                    f.write(json_data)
+            else:
+                with open(f"news{i['id1']}.json", "w", encoding='utf-8') as f:
+                    f.write(json_data)
 calculate_similarity('DESKTOP-JT60920','ESSL')
-
